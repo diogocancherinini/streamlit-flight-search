@@ -24,6 +24,7 @@ if submitted:
             "outbound_date": date.strftime("%Y-%m-%d"),
             "adults": passengers,
             "currency": "ARS",
+            "type": "2",  # One-way explícito
             "api_key": api_key
         }
         url = "https://serpapi.com/search"
