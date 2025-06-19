@@ -46,10 +46,11 @@ if submitted:
             filtered = []
             for option in flights:
                 for flight in option["flights"]:
-                    if flight.get("airline") and airline_code.upper() in flight["airline"]:
+                    flight_number = flight.get("flight_number", "")
+                    if flight_number.upper().startswith(airline_code.upper()):
                         filtered.append({
                             "Aerolínea": flight.get("airline"),
-                            "Vuelo": flight.get("flight_number"),
+                            "Vuelo": flight_number,
                             "Salida": f"{flight['departure_airport']['name']} ({flight['departure_airport']['id']}) - {flight['departure_airport']['time']}",
                             "Llegada": f"{flight['arrival_airport']['name']} ({flight['arrival_airport']['id']}) - {flight['arrival_airport']['time']}",
                             "Duración (min)": option.get("total_duration"),
