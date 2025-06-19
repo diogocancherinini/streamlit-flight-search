@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import datetime
+from urllib.parse import urlencode
 
 # Interfaz de entrada
 st.title("Buscador de Vuelos por Compañía Aérea (vía SerpApi)")
@@ -26,10 +27,17 @@ if submitted:
             "api_key": api_key
         }
         url = "https://serpapi.com/search"
-        response = requests.get(url, params=params)
 
-        if response.status_code != 200:
-            st.error(f"Error en la solicitud: {response.status_code}")
+        # Mostrar URL de debugging
+        st.code(f"Request URL: {url}?{urlencode(params)}")
+
+        try:
+            response = requests.get(url, params=params)
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            st.error(f"Error en la solicitud: {response.status_code} - {response.text}")
+        except Exception as e:
+            st.error(f"Ocurrió un error inesperado: {str(e)}")
         else:
             data = response.json()
             flights = data.get("best_flights", []) + data.get("other_flights", [])
