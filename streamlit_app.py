@@ -53,7 +53,7 @@ if submitted:
                     legs = []
                     for flight in option["flights"]:
                         leg_info = (
-                            f"\n- Vuelo {flight['flight_number']}: {flight['departure_airport']['id']}"
+                            f"- Vuelo {flight['flight_number']}: {flight['departure_airport']['id']}"
                             f" ({flight['departure_airport']['time']}) → {flight['arrival_airport']['id']}"
                             f" ({flight['arrival_airport']['time']})"
                         )
@@ -75,7 +75,7 @@ if submitted:
                         "Duración": duration_str,
                         "Lugares solicitados": passengers,
                         "Logo": logo,
-                        "Tramos": "".join(legs)
+                        "Tramos": "\n".join(legs)
                     })
 
             if filtered:
