@@ -40,11 +40,11 @@ st.markdown("""
 """)
 
 with st.form("flight_form"):
-    departure_id = st.text_input("Origen (código Aeropuerto IATA)", "AEP")
-    arrival_id = st.text_input("Destino (código Aeropuerto IATA)", "MDZ")
+    departure_id = st.text_input("Origen (código Aeropuerto IATA)", "EZE")
+    arrival_id = st.text_input("Destino (código Aeropuerto IATA)", "GRU")
     date = st.date_input("Fecha del vuelo", datetime.date.today())
     passengers = st.number_input("Cantidad de pasajeros (ADT + CNN)", min_value=1, max_value=9, value=1)
-    airline_code = st.text_input("Código IATA de la compañía aérea (ej: AR, LA, FO)", "AR")
+    airline_code = st.text_input("Código IATA de la compañía aérea (ej: AR, LA, KL)", "AR")
     api_key = st.text_input("Tu API Key de SerpApi", value="15b461a05b2a2328d521ebbd6142826a6d19b824bf11a8dceb911462f3040d02", type="password")
     submitted = st.form_submit_button("Buscar")
 
