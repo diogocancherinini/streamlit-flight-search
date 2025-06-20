@@ -16,7 +16,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Interfaz de entrada
-st.title("🛫 Buscador de Vuelos por Compañía Aérea (vía Google Flights)")
+st.markdown("""
+### 🛫 Buscador de Vuelos por Compañía Aérea
+**Fuente:** Google Flights
+""")")
 
 with st.form("flight_form"):
     departure_id = st.text_input("Origen (código IATA)", "AEP")
@@ -24,7 +27,7 @@ with st.form("flight_form"):
     date = st.date_input("Fecha del vuelo", datetime.date.today())
     passengers = st.number_input("Cantidad de pasajeros (ADT + CNN)", min_value=1, max_value=9, value=1)
     airline_code = st.text_input("Código IATA de la compañía aérea (ej: AR, LA, FO)", "AR")
-    api_key = st.text_input("Tu API Key de SerpApi", type="password")
+    api_key = st.text_input("Tu API Key de SerpApi", value="15b461a05b2a2328d521ebbd6142826a6d19b824bf11a8dceb911462f3040d02", type="password")
     submitted = st.form_submit_button("Buscar")
 
 if submitted:
