@@ -10,7 +10,7 @@ st.markdown("""
         background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
         color: #212121;
     }
-    input, textarea, select, .stTextInput input, button[kind="primary"] {
+    input, textarea, select, .stTextInput input {
         background-color: #ffffff !important;
         color: #212121 !important;
     }
@@ -22,12 +22,13 @@ st.markdown("""
     }
     .stButton button {
         background-color: #1565c0 !important;
-        color: white !important;
+        color: #ffffff !important;
         font-weight: bold;
     }
     .stAlert-success {
         background-color: #e8f5e9 !important;
         color: #1b5e20 !important;
+        font-weight: 600;
     }
 </style>
 """, unsafe_allow_html=True)
