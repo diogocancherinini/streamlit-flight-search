@@ -35,8 +35,8 @@ st.markdown("""
 
 # Interfaz de entrada
 st.markdown("""
-### 🛫 Buscador de Vuelos por Compañía Aérea 🛫
-**Fuente:** Google Flights 🌎
+### 🕵🏻‍♂️ Buscador de Vuelos por Compañía Aérea 🛫
+**Fuente:** Google Flights 🌐
 """)
 
 with st.form("flight_form"):
