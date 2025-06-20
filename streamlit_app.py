@@ -17,9 +17,10 @@ st.markdown("""
 
 # Interfaz de entrada
 st.markdown("""
-### 🛫 Buscador de Vuelos por Compañía Aérea
+### 🛫 Buscador de Vuelos por Compañía Aérea  
 **Fuente:** Google Flights
-""")")
+""")
+
 
 with st.form("flight_form"):
     departure_id = st.text_input("Origen (código IATA)", "AEP")
