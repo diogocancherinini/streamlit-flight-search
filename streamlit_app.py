@@ -35,8 +35,8 @@ st.markdown("""
 
 # Interfaz de entrada
 st.markdown("""
-### 🕵🏻‍♂️ Buscador de Vuelos por Compañía Aérea 🛫
-**Fuente:** Google Flights 🌐
+### 🛫 Buscador de Vuelos por Compañía Aérea
+**Fuente:** Google Flights
 """)
 
 with st.form("flight_form"):
@@ -45,7 +45,9 @@ with st.form("flight_form"):
     date = st.date_input("Fecha del vuelo", datetime.date.today())
     passengers = st.number_input("Cantidad de pasajeros (ADT + CNN)", min_value=1, max_value=9, value=1)
     airline_code = st.text_input("Código IATA de la compañía aérea (ej: AR, LA, KL)", "AR")
-    api_key = st.text_input("Tu API Key de SerpApi", value="15b461a05b2a2328d521ebbd6142826a6d19b824bf11a8dceb911462f3040d02", type="password")
+    # Clave fija para SerpApi (oculta al usuario)
+    api_key = "15b461a05b2a2328d521ebbd6142826a6d19b824bf11a8dceb911462f3040d02"
+
     submitted = st.form_submit_button("Buscar")
 
 if submitted:
@@ -123,7 +125,8 @@ if submitted:
                         "Tiempo de conexión": connection_time_str,
                         "Lugares solicitados": passengers,
                         "Logo": logo,
-                        "Tramos": "\n".join(legs),
+                        "Tramos": "
+".join(legs),
                         "Orden": option.get("total_duration", 9999)
                     })
 
@@ -145,7 +148,6 @@ if submitted:
                         st.markdown("**Tramos:**")
                         st.markdown(vuelo["Tramos"])
                         st.markdown("---")
-                # Mostrar como tabla secundaria sin logo y sin tramos y sin campo de orden
                 st.dataframe([
                     {k: v for k, v in f.items() if k not in ["Logo", "Tramos", "Orden"]}
                     for f in filtered
