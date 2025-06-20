@@ -52,17 +52,28 @@ if submitted:
                 if all_match:
                     first = option["flights"][0]
                     last = option["flights"][-1]
+                    logo = option.get("airline_logo")
                     filtered.append({
-                        "Aerolínea": first.get("airline"),
                         "Vuelos": ", ".join(f["flight_number"] for f in option["flights"]),
                         "Salida": f"{first['departure_airport']['name']} ({first['departure_airport']['id']}) - {first['departure_airport']['time']}",
                         "Llegada": f"{last['arrival_airport']['name']} ({last['arrival_airport']['id']}) - {last['arrival_airport']['time']}",
                         "Duración (min)": option.get("total_duration"),
-                        "Precio ARS": option.get("price")
+                        "Precio ARS": option.get("price"),
+                        "Logo": logo
                     })
 
             if filtered:
                 st.success(f"Se encontraron {len(filtered)} opciones completas de la aerolínea {airline_code.upper()}:")
-                st.dataframe(filtered)
+                for vuelo in filtered:
+                    if vuelo["Logo"]:
+                        st.image(vuelo["Logo"], width=60)
+                    st.write(f"**Vuelos:** {vuelo['Vuelos']}")
+                    st.write(f"**Salida:** {vuelo['Salida']}")
+                    st.write(f"**Llegada:** {vuelo['Llegada']}")
+                    st.write(f"**Duración:** {vuelo['Duración (min)']} min")
+                    st.write(f"**Precio:** ARS {vuelo['Precio ARS']}")
+                    st.markdown("---")
+                # Mostrar como tabla secundaria sin logo
+                st.dataframe([{k: v for k, v in f.items() if k != "Logo"} for f in filtered])
             else:
                 st.warning("No se encontraron vuelos disponibles con todos los tramos operados por la aerolínea seleccionada.")
