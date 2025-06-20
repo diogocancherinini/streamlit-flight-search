@@ -3,8 +3,20 @@ import requests
 import datetime
 from urllib.parse import urlencode
 
+# Estilo personalizado
+st.markdown("""
+    <style>
+    body {
+        background-color: #f2f8ff;
+    }
+    .stApp {
+        background-color: #f2f8ff;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Interfaz de entrada
-st.title("Buscador de Vuelos por Compañía Aérea (vía SerpApi)")
+st.title("🛫 Buscador de Vuelos por Compañía Aérea (vía SerpApi)")
 
 with st.form("flight_form"):
     departure_id = st.text_input("Origen (código IATA)", "AEP")
@@ -24,12 +36,10 @@ if submitted:
             "outbound_date": date.strftime("%Y-%m-%d"),
             "adults": passengers,
             "currency": "ARS",
-            "type": "2",  # One-way explícito
+            "type": "2",
             "api_key": api_key
         }
         url = "https://serpapi.com/search"
-
-        # Mostrar URL de debugging
         st.code(f"Request URL: {url}?{urlencode(params)}")
 
         try:
@@ -92,27 +102,31 @@ if submitted:
                         "Tiempo de conexión": connection_time_str,
                         "Lugares solicitados": passengers,
                         "Logo": logo,
-                        "Tramos": "\n".join(legs)
+                        "Tramos": "\n".join(legs),
+                        "Orden": option.get("total_duration", 9999)
                     })
 
+            filtered.sort(key=lambda x: x["Orden"])
+
             if filtered:
-                st.success(f"Se encontraron {len(filtered)} opciones completas de la aerolínea {airline_code.upper()}:")
+                st.success(f"✈️ Se encontraron {len(filtered)} opciones completas de la aerolínea {airline_code.upper()} para {date.strftime('%d/%m/%Y')}:")
                 for vuelo in filtered:
-                    if vuelo["Logo"]:
-                        st.image(vuelo["Logo"], width=60)
-                    st.write(f"**Vuelos:** {vuelo['Vuelos']}")
-                    st.write(f"**Salida:** {vuelo['Salida']}")
-                    st.write(f"**Llegada:** {vuelo['Llegada']}")
-                    st.write(f"**Duración:** {vuelo['Duración']}")
-                    if vuelo["Tiempo de conexión"]:
-                        st.write(f"**Tiempo de conexión:** {vuelo['Tiempo de conexión']}")
-                    st.write(f"**Lugares solicitados:** {vuelo['Lugares solicitados']}")
-                    st.write("**Tramos:**")
-                    st.markdown(vuelo["Tramos"])
-                    st.markdown("---")
-                # Mostrar como tabla secundaria sin logo y sin tramos
+                    with st.container():
+                        if vuelo["Logo"]:
+                            st.image(vuelo["Logo"], width=60)
+                        st.markdown(f"**Vuelos:** {vuelo['Vuelos']}")
+                        st.markdown(f"**Salida:** {vuelo['Salida']}")
+                        st.markdown(f"**Llegada:** {vuelo['Llegada']}")
+                        st.markdown(f"**Duración:** {vuelo['Duración']}")
+                        if vuelo["Tiempo de conexión"]:
+                            st.markdown(f"**Tiempo de conexión:** {vuelo['Tiempo de conexión']}")
+                        st.markdown(f"**Lugares solicitados:** {vuelo['Lugares solicitados']}")
+                        st.markdown("**Tramos:**")
+                        st.markdown(vuelo["Tramos"])
+                        st.markdown("---")
+                # Mostrar como tabla secundaria sin logo y sin tramos y sin campo de orden
                 st.dataframe([
-                    {k: v for k, v in f.items() if k not in ["Logo", "Tramos"]}
+                    {k: v for k, v in f.items() if k not in ["Logo", "Tramos", "Orden"]}
                     for f in filtered
                 ])
             else:
