@@ -45,7 +45,7 @@ with st.form("flight_form"):
     date = st.date_input("Fecha del vuelo", datetime.date.today())
     passengers = st.number_input("Cantidad de pasajeros (ADT + CNN)", min_value=1, max_value=9, value=1)
     airline_code = st.text_input("Código IATA de la compañía aérea (ej: AR, LA, KL)", "AR")
-    api_key = st.text_input("Tu API Key de SerpApi", value="15b461a05b2a2328d521ebbd6142826a6d19b824bf11a8dceb911462f3040d02", type="password")
+    api_key = "15b461a05b2a2328d521ebbd6142826a6d19b824bf11a8dceb911462f3040d02"
     submitted = st.form_submit_button("Buscar")
 
 if submitted:
