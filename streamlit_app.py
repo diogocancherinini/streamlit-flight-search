@@ -50,6 +50,15 @@ if submitted:
                     for flight in option["flights"]
                 )
                 if all_match:
+                    legs = []
+                    for flight in option["flights"]:
+                        leg_info = (
+                            f"\n- Vuelo {flight['flight_number']}: {flight['departure_airport']['id']}"
+                            f" ({flight['departure_airport']['time']}) → {flight['arrival_airport']['id']}"
+                            f" ({flight['arrival_airport']['time']})"
+                        )
+                        legs.append(leg_info)
+
                     first = option["flights"][0]
                     last = option["flights"][-1]
                     logo = option.get("airline_logo")
@@ -59,7 +68,8 @@ if submitted:
                         "Llegada": f"{last['arrival_airport']['name']} ({last['arrival_airport']['id']}) - {last['arrival_airport']['time']}",
                         "Duración (min)": option.get("total_duration"),
                         "Precio ARS": option.get("price"),
-                        "Logo": logo
+                        "Logo": logo,
+                        "Tramos": "".join(legs)
                     })
 
             if filtered:
@@ -72,8 +82,13 @@ if submitted:
                     st.write(f"**Llegada:** {vuelo['Llegada']}")
                     st.write(f"**Duración:** {vuelo['Duración (min)']} min")
                     st.write(f"**Precio:** ARS {vuelo['Precio ARS']}")
+                    st.write("**Tramos:**")
+                    st.markdown(vuelo["Tramos"])
                     st.markdown("---")
-                # Mostrar como tabla secundaria sin logo
-                st.dataframe([{k: v for k, v in f.items() if k != "Logo"} for f in filtered])
+                # Mostrar como tabla secundaria sin logo y sin tramos
+                st.dataframe([
+                    {k: v for k, v in f.items() if k not in ["Logo", "Tramos"]}
+                    for f in filtered
+                ])
             else:
                 st.warning("No se encontraron vuelos disponibles con todos los tramos operados por la aerolínea seleccionada.")
