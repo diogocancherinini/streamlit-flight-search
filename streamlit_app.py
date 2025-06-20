@@ -45,20 +45,24 @@ if submitted:
 
             filtered = []
             for option in flights:
-                for flight in option["flights"]:
-                    flight_number = flight.get("flight_number", "")
-                    if flight_number.upper().startswith(airline_code.upper()):
-                        filtered.append({
-                            "Aerolínea": flight.get("airline"),
-                            "Vuelo": flight_number,
-                            "Salida": f"{flight['departure_airport']['name']} ({flight['departure_airport']['id']}) - {flight['departure_airport']['time']}",
-                            "Llegada": f"{flight['arrival_airport']['name']} ({flight['arrival_airport']['id']}) - {flight['arrival_airport']['time']}",
-                            "Duración (min)": option.get("total_duration"),
-                            "Precio ARS": option.get("price")
-                        })
+                all_match = all(
+                    flight.get("flight_number", "").upper().startswith(airline_code.upper())
+                    for flight in option["flights"]
+                )
+                if all_match:
+                    first = option["flights"][0]
+                    last = option["flights"][-1]
+                    filtered.append({
+                        "Aerolínea": first.get("airline"),
+                        "Vuelos": ", ".join(f["flight_number"] for f in option["flights"]),
+                        "Salida": f"{first['departure_airport']['name']} ({first['departure_airport']['id']}) - {first['departure_airport']['time']}",
+                        "Llegada": f"{last['arrival_airport']['name']} ({last['arrival_airport']['id']}) - {last['arrival_airport']['time']}",
+                        "Duración (min)": option.get("total_duration"),
+                        "Precio ARS": option.get("price")
+                    })
 
             if filtered:
-                st.success(f"Se encontraron {len(filtered)} vuelos de la aerolínea {airline_code.upper()}:")
+                st.success(f"Se encontraron {len(filtered)} opciones completas de la aerolínea {airline_code.upper()}:")
                 st.dataframe(filtered)
             else:
-                st.warning("No se encontraron vuelos disponibles para la aerolínea seleccionada.")
+                st.warning("No se encontraron vuelos disponibles con todos los tramos operados por la aerolínea seleccionada.")
