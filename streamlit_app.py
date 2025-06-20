@@ -10,7 +10,7 @@ st.markdown("""
         background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
         color: #212121;
     }
-    input, textarea, select, .stTextInput input {
+    input, textarea, select, .stTextInput input, button[kind="primary"] {
         background-color: #ffffff !important;
         color: #212121 !important;
     }
@@ -20,12 +20,21 @@ st.markdown("""
     .stMarkdown h3 {
         color: #0d47a1;
     }
+    .stButton button {
+        background-color: #1565c0 !important;
+        color: white !important;
+        font-weight: bold;
+    }
+    .stAlert-success {
+        background-color: #e8f5e9 !important;
+        color: #1b5e20 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 # Interfaz de entrada
 st.markdown("""
-### 🛫 Buscador de Vuelos por Compañía Aérea  
+### 🛫 Buscador de Vuelos por Compañía Aérea
 **Fuente:** Google Flights
 """)
 
