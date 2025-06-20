@@ -6,21 +6,28 @@ from urllib.parse import urlencode
 # Estilo personalizado
 st.markdown("""
     <style>
-    body {
+    body, .stApp {
         background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
+        color: #212121;
     }
-    .stApp {
-        background-color: #f2f8ff;
+    input, textarea, select, .stTextInput input {
+        background-color: #ffffff !important;
+        color: #212121 !important;
     }
-    </style>
+    .stTextInput > div > div > input {
+        color: #212121 !important;
+    }
+    .stMarkdown h3 {
+        color: #0d47a1;
+    }
+</style>
 """, unsafe_allow_html=True)
 
 # Interfaz de entrada
 st.markdown("""
-### 🛫 Buscador de Vuelos por Compañía Aérea  
+### 🛫 Buscador de Vuelos por Compañía Aérea
 **Fuente:** Google Flights
-""")
-
+""")")
 
 with st.form("flight_form"):
     departure_id = st.text_input("Origen (código IATA)", "AEP")
