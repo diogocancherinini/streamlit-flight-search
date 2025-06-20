@@ -7,7 +7,7 @@ from urllib.parse import urlencode
 st.markdown("""
     <style>
     body {
-        background-color: #f2f8ff;
+        background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
     }
     .stApp {
         background-color: #f2f8ff;
@@ -16,7 +16,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Interfaz de entrada
-st.title("🛫 Buscador de Vuelos por Compañía Aérea (vía SerpApi)")
+st.title("🛫 Buscador de Vuelos por Compañía Aérea (vía Google Flights)")
 
 with st.form("flight_form"):
     departure_id = st.text_input("Origen (código IATA)", "AEP")
