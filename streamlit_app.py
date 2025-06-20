@@ -40,8 +40,8 @@ st.markdown("""
 """)
 
 with st.form("flight_form"):
-    departure_id = st.text_input("Origen (código IATA)", "AEP")
-    arrival_id = st.text_input("Destino (código IATA)", "MDZ")
+    departure_id = st.text_input("Origen (código Aeropuerto IATA)", "AEP")
+    arrival_id = st.text_input("Destino (código Aeropuerto)", "MDZ")
     date = st.date_input("Fecha del vuelo", datetime.date.today())
     passengers = st.number_input("Cantidad de pasajeros (ADT + CNN)", min_value=1, max_value=9, value=1)
     airline_code = st.text_input("Código IATA de la compañía aérea (ej: AR, LA, FO)", "AR")
