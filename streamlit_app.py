@@ -51,7 +51,10 @@ if submitted:
                 )
                 if all_match:
                     legs = []
-                    for flight in option["flights"]:
+                    connection_time_str = ""
+                    flights_list = option["flights"]
+
+                    for flight in flights_list:
                         leg_info = (
                             f"- Vuelo {flight['flight_number']}: {flight['departure_airport']['id']}"
                             f" ({flight['departure_airport']['time']}) → {flight['arrival_airport']['id']}"
@@ -59,8 +62,21 @@ if submitted:
                         )
                         legs.append(leg_info)
 
-                    first = option["flights"][0]
-                    last = option["flights"][-1]
+                    # Calcular tiempo de conexión si hay más de un tramo
+                    if len(flights_list) > 1:
+                        arrival_time_str = flights_list[0]["arrival_airport"]["time"]
+                        departure_time_str = flights_list[1]["departure_airport"]["time"]
+                        fmt = "%Y-%m-%d %H:%M"
+                        arrival_dt = datetime.datetime.strptime(arrival_time_str, fmt)
+                        departure_dt = datetime.datetime.strptime(departure_time_str, fmt)
+                        diff = departure_dt - arrival_dt
+                        total_minutes = int(diff.total_seconds() // 60)
+                        hours = total_minutes // 60
+                        minutes = total_minutes % 60
+                        connection_time_str = f"{hours}h {minutes}m"
+
+                    first = flights_list[0]
+                    last = flights_list[-1]
                     logo = option.get("airline_logo")
 
                     total_minutes = option.get("total_duration", 0)
@@ -69,10 +85,11 @@ if submitted:
                     duration_str = f"{hours}h {minutes}m"
 
                     filtered.append({
-                        "Vuelos": ", ".join(f["flight_number"] for f in option["flights"]),
+                        "Vuelos": ", ".join(f["flight_number"] for f in flights_list),
                         "Salida": f"{first['departure_airport']['name']} ({first['departure_airport']['id']}) - {first['departure_airport']['time']}",
                         "Llegada": f"{last['arrival_airport']['name']} ({last['arrival_airport']['id']}) - {last['arrival_airport']['time']}",
                         "Duración": duration_str,
+                        "Tiempo de conexión": connection_time_str,
                         "Lugares solicitados": passengers,
                         "Logo": logo,
                         "Tramos": "\n".join(legs)
@@ -87,6 +104,8 @@ if submitted:
                     st.write(f"**Salida:** {vuelo['Salida']}")
                     st.write(f"**Llegada:** {vuelo['Llegada']}")
                     st.write(f"**Duración:** {vuelo['Duración']}")
+                    if vuelo["Tiempo de conexión"]:
+                        st.write(f"**Tiempo de conexión:** {vuelo['Tiempo de conexión']}")
                     st.write(f"**Lugares solicitados:** {vuelo['Lugares solicitados']}")
                     st.write("**Tramos:**")
                     st.markdown(vuelo["Tramos"])
