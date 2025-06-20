@@ -10,7 +10,7 @@ with st.form("flight_form"):
     departure_id = st.text_input("Origen (código IATA)", "AEP")
     arrival_id = st.text_input("Destino (código IATA)", "MDZ")
     date = st.date_input("Fecha del vuelo", datetime.date.today())
-    passengers = st.number_input("Cantidad de pasajeros", min_value=1, max_value=9, value=1)
+    passengers = st.number_input("Cantidad de pasajeros (ADT + CNN)", min_value=1, max_value=9, value=1)
     airline_code = st.text_input("Código IATA de la compañía aérea (ej: AR, LA, FO)", "AR")
     api_key = st.text_input("Tu API Key de SerpApi", type="password")
     submitted = st.form_submit_button("Buscar")
@@ -62,12 +62,18 @@ if submitted:
                     first = option["flights"][0]
                     last = option["flights"][-1]
                     logo = option.get("airline_logo")
+
+                    total_minutes = option.get("total_duration", 0)
+                    hours = total_minutes // 60
+                    minutes = total_minutes % 60
+                    duration_str = f"{hours}h {minutes}m"
+
                     filtered.append({
                         "Vuelos": ", ".join(f["flight_number"] for f in option["flights"]),
                         "Salida": f"{first['departure_airport']['name']} ({first['departure_airport']['id']}) - {first['departure_airport']['time']}",
                         "Llegada": f"{last['arrival_airport']['name']} ({last['arrival_airport']['id']}) - {last['arrival_airport']['time']}",
-                        "Duración (min)": option.get("total_duration"),
-                        "Precio ARS": option.get("price"),
+                        "Duración": duration_str,
+                        "Lugares solicitados": passengers,
                         "Logo": logo,
                         "Tramos": "".join(legs)
                     })
@@ -80,8 +86,8 @@ if submitted:
                     st.write(f"**Vuelos:** {vuelo['Vuelos']}")
                     st.write(f"**Salida:** {vuelo['Salida']}")
                     st.write(f"**Llegada:** {vuelo['Llegada']}")
-                    st.write(f"**Duración:** {vuelo['Duración (min)']} min")
-                    st.write(f"**Precio:** ARS {vuelo['Precio ARS']}")
+                    st.write(f"**Duración:** {vuelo['Duración']}")
+                    st.write(f"**Lugares solicitados:** {vuelo['Lugares solicitados']}")
                     st.write("**Tramos:**")
                     st.markdown(vuelo["Tramos"])
                     st.markdown("---")
